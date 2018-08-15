@@ -1,16 +1,23 @@
 var Stream = require('./openStream');
 
-var $ = require('jquery')
-
-Stream.open();
+var playVideo = require('./playVideo');
 
 var Peer = require('simple-peer');
+var $ = require('jquery')
 
-var p = new Peer({ initiator: location.hash === '#1', trickle: false });
+
+
+Stream.open(function(stream){
+
+    playVideo(stream,'localStream'); 
+                
+    console.log(stream);
+
+
+var p = new Peer({ initiator: location.hash === '#1', trickle: false ,stream:stream});
 
 p.on('signal',(token) => {
-    console.log(token);
-    console.log('waitting to connect');
+ 
     $('#mySignal').val(JSON.stringify(token));
 } ); // sinh ra 1 object 
 
@@ -23,7 +30,12 @@ $('#click').click(()=>{
 
 });
 
-p.on('connect',()=>{
-    console.log('connected');
-})
+p.on('stream',(stream)=>{
+        console.log(stream);
+        playVideo(stream,'friendStream');
+
+});
+
+});
+
 
