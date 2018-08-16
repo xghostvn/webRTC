@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -13,11 +14,10 @@
     <video src="" id="localStream" controls width="500"></video>
     <br>
     <video src="" id="friendStream" controls width="500"></video>
+
     <br>
-    <textarea rows="3" cols="100" id="mySignal" placeholder="My Signal"></textarea>
-    <br>
-    <textarea id="friendSignal" placeholder="friend Signal"></textarea>
-    <button id="click">Click me</button>
+  
+    <button id="connect">Connect Friend</button>
 
     <script src="bundle.js"></script>
 
