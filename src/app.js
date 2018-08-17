@@ -5,59 +5,57 @@
     
     var playVideo = require('./playVideo');
     
-    var Peer = require('simple-peer');
-    var $ = require('jquery')
-    var my_token;
-    
+    var Peer = require('peerjs');
 
-    socket.on('abc',()=>{
-             console.log('123');
-    });
-    
+    var $ = require('jquery');
+
+
+    var uid = require('uid');
+     
+
+
+    function getPeer(){
+        const id = uid(10);
+        $('#mypeerid').append(id);
+        console.log(id);
+        return id;
+
+    }
+
+    var peer = new Peer(getPeer());
+    console.log(peer);
+
     Stream.open(function(stream){
     
         playVideo(stream,'localStream'); 
                 
 
-        socket.on('answer_token',(data)=>{
+        $('#connect').click(()=>{
 
-           
+                var fid = $('#friendid').val();
 
-            p.signal(data.token);
+                var call = peer.call(fid,stream);
 
+                call.on('stream',(stream)=>{
+                        playVideo(stream,'friendStream');
+                });
 
         });
-      
-                console.log(stream);
+
+
+        peer.on('call',(call)=>{
+
+            call.answer(stream);
+                    console.log('123');
+            call.on('stream',(stream)=>{
+                playVideo(stream,'friendStream');
+        });
+
+        });
+
 
     
-    
-                var p = new Peer({ initiator: location.hash === '#1', trickle: false ,stream:stream});
-    
-                p.on('signal',(token) => {
-                
-                    my_token=token;
-  
-                } ); // sinh ra 1 object 
-    
-    
-                $('#connect').click(()=>{
 
-            
-
-                    socket.emit('send_token',{token : my_token});
-    
-                     
-
-                 
-    
-                });
-    
-                p.on('stream',(stream)=>{
-                        console.log(stream);
-                        playVideo(stream,'friendStream');
-    
-                });
     
     });
     
